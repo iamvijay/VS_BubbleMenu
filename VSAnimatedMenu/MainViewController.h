@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  MainViewController.h
 //  VSAnimatedMenu
 //
 //  Created by Vijay subramaniyam on 11/04/15.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface MainViewController : UIViewController
 
 @end
-
