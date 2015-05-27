@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SubMenuAnimation.h"
 
-@interface MainViewController : UIViewController
+@interface MainViewController : UIViewController<subMneuANimationDelegate>
+- (IBAction)openSubMenu:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UIButton *animationButton;
+
 
 @end
