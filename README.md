@@ -4,10 +4,11 @@
  
 # Screen shots 
 
-  <img align="left" src="http://i.imgur.com/mKpgnUB.jpeg" alt="SS1" width="250" height="427"/>    
-  
-  <img align="center" src="http://i.imgur.com/zUYUuIH.jpeg" alt="SS2" width="240" height="427"/>
 
+
+  <img align="left" src="https://i.imgflip.com/ma3rj.gif" alt="SS1" width="240" height="427"/>
+  <img align="center" src="http://i.imgur.com/mKpgnUB.jpeg" alt="SS2" width="240" height="427"/>
+  <img align="right" src="http://i.imgur.com/zUYUuIH.jpeg" alt="SS3" width="240" height="427"/>
 
 # Installation
 
