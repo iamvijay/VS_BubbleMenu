@@ -34,6 +34,6 @@
 
 @interface SubMenuAnimation : UIView
 @property(nonatomic,retain)id<subMneuANimationDelegate>delegate;
--(void)AnimateImages:(NSArray*)images frame:(CGRect)buttonFrame;
+-(void)AnimateImages:(NSArray *)images menuNames:(NSArray*)menuArray frame:(CGRect)buttonFrame;
 -(void)shrink;
 @end

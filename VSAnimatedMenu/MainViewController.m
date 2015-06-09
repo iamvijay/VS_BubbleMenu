@@ -73,14 +73,15 @@ BOOL isExpanded_;
     {
 
         image = @[@"facebook.png",@"googleplus.png",@"twitter.png",@"youtube.png"];
-        [subMenu AnimateImages:image frame:self.animationButton.frame];
+        NSMutableArray *menuName = [NSMutableArray arrayWithObjects:@"Facebook",@"Google+",@"Twitter",@"Youtube", nil];
+        [subMenu AnimateImages:image menuNames:menuName frame:self.animationButton.frame];
         [self.view addSubview:subMenu];
         
         
         [self.view bringSubviewToFront:self.animationButton];
         
         //If you don need Black transparent view behind menu comment follwoing three lines
-        backGroundView.backgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.65f];
+        [backGroundView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.45]]; //0.5
         [self.view addSubview:backGroundView];
         [self.view sendSubviewToBack:backGroundView];
 

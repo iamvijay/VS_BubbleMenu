@@ -31,7 +31,7 @@
 //ANIMATION MACROS
 
 const CGFloat kDefaultAnimateDuration = 0.9f;
-const CGFloat kDefaultAnimateDelay = 0.35f;
+const CGFloat kDefaultAnimateDelay = 0.1f;
 const CGFloat kDefaultSpringDamping = 0.53f;
 const CGFloat kDefaultSpringVelocity = 0.65f;
 
@@ -40,12 +40,16 @@ const int kDefaultMenuSize = 50;
 @interface SubMenuAnimation ()
 
 @property (nonatomic, strong) NSMutableArray *items;
+@property (nonatomic, strong) NSMutableArray *ImageName;
+
 
 @end
 BOOL isExpanded;
 int tag = 0;
 int imageCount;
 int Xaxis_;
+int Yaxis_;
+
 
 
 
@@ -53,22 +57,43 @@ int Xaxis_;
 @implementation SubMenuAnimation
 @synthesize delegate;
 
--(void)AnimateImages:(NSArray *)images  frame:(CGRect)buttonFrame
+-(void)AnimateImages:(NSArray *)images menuNames:(NSArray*)menuArray frame:(CGRect)buttonFrame
 {
     
+    self.items = nil;
+    self.ImageName = nil;
     
-    int x = buttonFrame.origin.y - 25;
+    
+    int x = buttonFrame.origin.y-25;
+    Yaxis_ = buttonFrame.origin.y;
     Xaxis_ = buttonFrame.origin.x+7;
     imageCount = (int)[images count];
     isExpanded = NO;
     self.items = [NSMutableArray array];
+    self.ImageName = [NSMutableArray array];
+
     for (int i = 0; i < images.count; i++) {
-        UIImageView *item = [[UIImageView alloc] init];
-        [item setImage:[UIImage imageNamed:[images objectAtIndex:i]]];
-        x = x - 60;
+        UIButton *item = [UIButton buttonWithType:UIButtonTypeCustom];
         item.userInteractionEnabled = YES;
-        item.frame = CGRectMake(buttonFrame.origin.x+5, SCREEN_HEIGHT-80, kDefaultMenuSize, kDefaultMenuSize);
+        item.frame = CGRectMake(buttonFrame.origin.x+5, buttonFrame.origin.y+2, kDefaultMenuSize, kDefaultMenuSize);
         item.tag = tag + i;
+        [item setBackgroundImage:[UIImage imageNamed:[images objectAtIndex:i]] forState:UIControlStateNormal];
+        [item addTarget:self action:@selector(tapped:) forControlEvents:UIControlEventTouchUpInside];
+
+        x = x - 60;
+        
+        CGRect frameSize = CGRectMake(20, SCREEN_WIDTH/2, SCREEN_WIDTH-40,20);
+        UILabel *menuName = [[UILabel alloc]init];
+        NSInteger textWidth = [self getTextWidth:[menuArray objectAtIndex:i] frame:frameSize font:@"Helvetica-Light" fontSize:13];
+        
+        menuName.frame = CGRectMake(item.frame.origin.x-textWidth-30, item.frame.origin.y+13, textWidth+20, 22);
+        menuName.text = [menuArray objectAtIndex:i];
+        menuName.backgroundColor = [UIColor whiteColor];
+        menuName.font = [UIFont fontWithName:@"Helvetica-Light" size:13];
+        menuName.textColor = [UIColor darkTextColor];
+        menuName.textAlignment = NSTextAlignmentCenter;
+        menuName.layer.cornerRadius = 8.0f;
+        menuName.layer.masksToBounds = YES;
         
         [UIView animateWithDuration:kDefaultAnimateDuration
                               delay:kDefaultAnimateDelay
@@ -76,7 +101,9 @@ int Xaxis_;
               initialSpringVelocity:kDefaultSpringVelocity
                             options:UIViewAnimationOptionCurveEaseOut animations:^{
                               
-                                    item.frame = CGRectMake(buttonFrame.origin.x+5, x, kDefaultMenuSize, kDefaultMenuSize);
+                            item.frame = CGRectMake(buttonFrame.origin.x+5, x, kDefaultMenuSize, kDefaultMenuSize);
+                            menuName.frame = CGRectMake(item.frame.origin.x-textWidth-30, item.frame.origin.y+13, textWidth+20, 22);
+    
                              }
 
                          completion:^(BOOL finished) {
@@ -85,50 +112,76 @@ int Xaxis_;
         
         
         
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
-        [item addGestureRecognizer:tap];
+        
         [self addSubview:item];
+        [self addSubview:menuName];
         [self.items addObject:item];
+        [self.ImageName addObject:menuName];
         
         
     }
+    
+    
     
     
 }
 
 -(void)shrink
 {
-    for (int i = 0; i < imageCount; i++) {
+    for (int i = 0; i < [self.items count]; i++) {
         [UIView animateWithDuration:0.45f animations:^{
         
-        [self.items [i] setFrame:CGRectMake(Xaxis_, SCREEN_HEIGHT-68, 40, 40)];
-
+            CGRect frameLabel = [self.ImageName [i] frame];
+            [self.ImageName [i] setFrame:CGRectMake(frameLabel.origin.x, Yaxis_+20, frameLabel.size.width, 22)];
+            [self.items [i] setFrame:CGRectMake(Xaxis_, Yaxis_+2, 40, 40)];
+            
+      
         
     }];
     
     }
     
-    [self performSelector:@selector(removeAll) withObject:nil afterDelay:0.6];
+    [self performSelector:@selector(removeAll) withObject:nil afterDelay:0.3];
     
 }
 
-- (void)tapped:(UITapGestureRecognizer *)gesture
+-(IBAction)tapped:(id)sender
 {
-    [delegate buttonIndexPressed:(int)gesture.view.tag];
+    [delegate buttonIndexPressed:(int)[sender tag]];
     [self shrink];
 }
 
 -(void)removeAll
 {
-    for (int i = 0; i < imageCount; i++) {
-        [UIView animateWithDuration:0.55 animations:^{
+    for (int i = 0; i < [self.items count]; i++) {
             [self.items [i] removeFromSuperview];
-            
-        }];
+            [self.ImageName [i] removeFromSuperview];
+
     }
     
+    self.items = nil;
+    self.ImageName = nil;
     isExpanded = YES;
     
+    
+}
+
+-(NSInteger)getTextWidth:(NSString*)message frame:(CGRect)frameValue font:(NSString*)fontName fontSize:(int)size
+{
+    
+    CGFloat labelWidth  = CGRectGetWidth(frameValue);
+    
+    CGSize labelContraints   = CGSizeMake(labelWidth, 1000.0f);
+    
+    CGRect labelRect = [message
+                        boundingRectWithSize:labelContraints
+                        options:NSStringDrawingUsesLineFragmentOrigin
+                        attributes:@{
+                                     NSFontAttributeName : [UIFont fontWithName:fontName size:size]
+                                     }
+                        context:nil];
+    
+    return labelRect.size.width;
     
 }
 
