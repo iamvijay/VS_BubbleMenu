@@ -25,31 +25,28 @@ and make sure you check the "Copy items into destination group's folder" box
 
 # Usage
 
-Creation is very simple just send the array of images and Button frame. Button frame will decide from where 
-the animation should start.
-
-You dont want to change in frame anything. Keep button where ever you want in the screen bottom left or bottom right or center
+Creation is very simple just send the array of images, image names and Button frame. 
 
 ```objective-c
-SubMenuAnimation *subMenu = [[SubMenuAnimation alloc]init];
-subMenu.delegate=self;
+ SubMenuAnimation *subMenu = [[SubMenuAnimation alloc]init];
+ subMenu.delegate=self;
 
-NSArray *image  [[NSArray alloc]init];
-image = @[@"facebook.png",@"googleplus.png",@"twitter.png",@"youtube.png"];
-
-[subMenu AnimateImages:image frame:Button.frame];
+ NSArray *image = [NSArray arrayWithObjects:@"facebook.png",@"googleplus.png",@"twitter.png",@"youtube.png", nil];
+ NSArray *menuName = [NSArray arrayWithObjects:@"Facebook",@"Google+",@"Twitter",@"Youtube", nil]
+ [subMenu AnimateImages:image menuNames:menuName frame:self.animationButton.frame];
 ```
 
-As like above create object and create array of images. Then call the method with image array and button frame.
+As like above create object and create array of images and image names. Then call the method with image array,image names array with button frame.
+
 Dont forget to set Delegate.
 
 If you want to change animation speed or timing change below values which is available in SubMenuAnimation.h.
 
 ```objective-c
-const CGFloat kDefaultAnimateDuration = 0.9f;
-const CGFloat kDefaultAnimateDelay = 0.35f;
-const CGFloat kDefaultSpringDamping = 0.53f;
-const CGFloat kDefaultSpringVelocity = 0.65f;
+const CGFloat kDefaultAnimateDuration = 0.55f;
+const CGFloat kDefaultAnimateDelay = 0.1f;
+const CGFloat kDefaultSpringDamping = 0.58f;
+const CGFloat kDefaultSpringVelocity = 0.55f;
 
 const int kDefaultMenuSize = 50;
 ```
@@ -66,10 +63,9 @@ you can identify which button has been pressed so based on button tag you can do
   //Your logic goes here   
 }
 ```
-And tap the button to close menu.
+And tap the button or title to close menu.
 
-Note : This is my first library so please feel free to comment or even you can tell me if i have to improve anything
-or small mistakes in the coding. Thanks
+Note : This is my first library so please feel free to comment or even you can suggest me if i have to improve anything in the code. Thanks
 
 # Get in touch
 If you want to contact me mail at vijays1107@gmail.com 
