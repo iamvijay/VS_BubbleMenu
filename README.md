@@ -1,11 +1,8 @@
 # Bubble Menu
   
-  A good way to use bubble menu which is very simple and less time to integrate.
+ One of the cool menu to show the user which will be very interactive to the user.
  
 # Screen shots 
-
-
-
   <img align="left" src="https://i.imgflip.com/mncgx.gif" alt="SS1" width="240" height="427"/>
   <img align="center" src="http://i.imgur.com/CZjJa9D.jpeg" alt="SS2" width="240" height="427"/>
   <img align="center" src="http://i.imgur.com/BSlWEGo.jpeg" alt="SS3" width="240" height="427"/>
@@ -30,6 +27,9 @@ Creation is very simple just send the array of images, image names and Button fr
 ```objective-c
  SubMenuAnimation *subMenu = [[SubMenuAnimation alloc]init];
  subMenu.delegate=self;
+ 
+ subMenu.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+ [self.view addSubview:subMenu];
 
  NSArray *image = [NSArray arrayWithObjects:@"facebook.png",@"googleplus.png",@"twitter.png",@"youtube.png", nil];
  NSArray *menuName = [NSArray arrayWithObjects:@"Facebook",@"Google+",@"Twitter",@"Youtube", nil]
